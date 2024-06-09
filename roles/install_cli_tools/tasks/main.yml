@@ -1,0 +1,97 @@
+---
+# tasks file for install_cli_tools
+
+- name: Create bin dir
+  become: false
+  ansible.builtin.file:
+    path: ~/bin
+    state: directory
+    mode: '0755'
+
+- name: User bin in path
+  ansible.builtin.lineinfile:
+    path: "~/.bashrc"
+    line: 'export PATH="$PATH:$HOME/bin"'
+    regexp: 'export PATH="$PATH:$HOME/bin"'
+
+# Install Flux
+- name: Install Flux 2 CLI
+  become: false
+  ansible.builtin.shell: |
+    set -o pipefail
+    curl -s https://fluxcd.io/install.sh | bash -s ~/bin
+  args:
+    creates: "{{ ansible_user_dir }}/bin/flux"
+    executable: /bin/bash
+
+- name: Add bash completion for flux
+  become: false
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_user_dir }}/.bashrc"
+    marker: "# {mark} FluxCD Bash Completion"
+    block: |
+      . <(flux completion bash)
+
+# Install Kustomize
+- name: Install Kustomize CLI
+  become: false
+  ansible.builtin.shell: |
+    set -o pipefail
+    curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
+  args:
+    chdir: "{{ ansible_user_dir }}/bin"
+    creates: "{{ ansible_user_dir }}/bin/kustomize"
+    executable: /bin/bash
+
+- name: Add bash completion for Kustomize
+  become: false
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_user_dir }}/.bashrc"
+    marker: "# {mark} Kustomize Bash Completion"
+    block: |
+      source <(kustomize completion bash)
+
+# Install Helm
+- name: Upload Helm Signing Key
+  become: true
+  become_user: root
+  ansible.builtin.copy:
+    src: helm-keyring.asc
+    dest: /usr/share/keyrings/helm-keyring.asc
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Add Helm Repo
+  become: true
+  become_user: root
+  ansible.builtin.lineinfile:
+    path: "/etc/apt/sources.list.d/helm.list"
+    line: 'deb [signed-by=/usr/share/keyrings/helm-keyring.asc] https://baltocdn.com/helm/stable/debian/ all main'
+    create: true
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Update apt-cache
+  become: true
+  become_user: root
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Install helm
+  become: true
+  become_user: root
+  ansible.builtin.apt:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - python3-yaml
+      - helm={{ fluxcd_helm_version }}
+      - git
+
+- name: Install Helm diff plugin
+  kubernetes.core.helm_plugin:
+    plugin_path: https://github.com/databus23/helm-diff
+    state: present

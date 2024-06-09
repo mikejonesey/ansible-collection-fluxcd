@@ -1,0 +1,4 @@
+---
+# defaults file for install_cli_tools
+
+fluxcd_helm_version: "3.15.1-1"

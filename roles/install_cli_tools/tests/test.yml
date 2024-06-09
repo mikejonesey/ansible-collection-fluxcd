@@ -1,0 +1,6 @@
+---
+- name: Test cli tool play
+  hosts: localhost
+  remote_user: root
+  roles:
+    - install_cli_tools

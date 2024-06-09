@@ -1,0 +1,10 @@
+# playbook for installing cli tools
+
+- name: Setup new workstation
+  hosts: '{{ fluxcd_cli_tools_target | default("localhost") }}'
+  become: false
+  roles:
+    - name: Install Common Tools
+      role: mikejonesey.fluxcd.install_cli_tools
+      tags: cli
+  tags: fluxcd,cli
