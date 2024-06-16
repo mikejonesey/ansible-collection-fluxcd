@@ -4,6 +4,11 @@
 fluxcd_kubernetes:
   config_path: "/home/{{ ansible_user }}/.kube/config"
 
+#  Example extra components
+#  fluxcd_bootstrap:
+#    ..
+#    components_extra: "image-reflector-controller,image-automation-controller"
+
 fluxcd_bootstrap:
   repository_type: "gitlab"
   gitlab_token: ""
@@ -14,3 +19,4 @@ fluxcd_bootstrap:
   repo_hostname: "gitlab.example.com"
   repo_branch: "main"
   k8s_cluster_name: "staging"
+  components_extra: ""

@@ -1,0 +1,12 @@
+# playbook for ininstalling fluxcd
+# This play is useful when you want to move the flux repo, eg to move from a flux-infr to flux-fleet repo
+# To change bootstrap settings eg, adding / removing extras, just re-run bootstrap without uninstall.
+
+- name: Flux CD Uninstall
+  hosts: '{{ fluxcd_target | default("k8_master") }}'
+  become: false
+  roles:
+    - name: FluxCD Uninstall
+      role: mikejonesey.fluxcd.uninstall
+      tags: uninstall
+  tags: fluxcd_uninstall

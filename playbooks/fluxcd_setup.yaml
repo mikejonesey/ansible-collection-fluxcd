@@ -1,4 +1,4 @@
-# playbook for installing cli tools
+# playbook for bootstraping flux and importing secrets
 
 - name: Flux CD Setup New k8s Env
   hosts: '{{ fluxcd_target | default("k8_master") }}'

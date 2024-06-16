@@ -3,9 +3,23 @@ releases:
   1.0.0:
     release_date: '2024-06-09'
   1.1.0:
+    release_date: '2024-06-11'
+  1.2.0:
     changes:
       minor_changes:
-      - added kubernetes secrets
+        - add example for oci reg secret
+        - add interval with default
+        - add namespace to all secrets to support multi-tenancy
+        - add play and role for uninstall of fluxcd
+        - added kubernetes secrets
+        - allow env to re-bootstrap
+        - cleanup logic on extras to use default value
+        - update example passwords with passwordstore
+      release_summary: 'update bootstrap adding support for oci/flux image controllers'
     fragments:
-    - k8s-secrets.yaml
-    release_date: '2024-06-11'
+      - bootstrap.yaml
+      - k8s-secrets.yaml
+      - secrets.yaml
+      - summary.yaml
+      - uninstall.yaml
+    release_date: '2024-06-16'
