@@ -8,6 +8,12 @@ collection tasks:
 - create secrets
 - uninstall fluxcd
 
+# Installation
+
+```
+ansible-galaxy collection install mikejonesey.fluxcd
+```
+
 # Top Level Playbook Examples
 
 The following are examples of the plays being included in top level playbooks.
