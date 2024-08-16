@@ -3,10 +3,11 @@
 # To change bootstrap settings eg, adding / removing extras, just re-run bootstrap without uninstall.
 
 - name: Flux CD Uninstall
-  hosts: '{{ fluxcd_target | default("k8_master") }}'
+  hosts: '{{ fluxcd_target | default("k8s_master") }}'
   become: false
   roles:
     - name: FluxCD Uninstall
       role: mikejonesey.fluxcd.uninstall
+      run_once: true
       tags: uninstall
   tags: fluxcd_uninstall

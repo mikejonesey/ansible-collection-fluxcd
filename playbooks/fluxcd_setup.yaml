@@ -1,14 +1,16 @@
 # playbook for bootstraping flux and importing secrets
 
 - name: Flux CD Setup New k8s Env
-  hosts: '{{ fluxcd_target | default("k8_master") }}'
+  hosts: '{{ fluxcd_target | default("k8s_master") }}'
   become: false
   roles:
     - name: Flux Bootstrap
       role: mikejonesey.fluxcd.bootstrap
+      run_once: true
       tags: bootstrap
 
     - name: Flux Secrets
       role: mikejonesey.fluxcd.secret
+      run_once: true
       tags: secrets,secret
   tags: fluxcd

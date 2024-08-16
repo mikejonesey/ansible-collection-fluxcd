@@ -23,8 +23,8 @@
     --hostname={{ fluxcd_bootstrap.repo_hostname }} \
     --branch={{ fluxcd_bootstrap.repo_branch }} \
     --token-auth \
-    --components-extra={{ fluxcd_bootstrap.components_extra|default("", true) }} \
-    --interval="{{ fluxcd_bootstrap.interval|default("1m0s", false) }}" \
+    --components-extra={{ fluxcd_bootstrap.components_extra | default("", true) }} \
+    --interval="{{ fluxcd_bootstrap.interval | default("1m0s", false) }}" \
     --path=./clusters/{{ fluxcd_bootstrap.k8s_cluster_name }}
   args:
     executable: /bin/bash
@@ -43,8 +43,8 @@
     --repository={{ fluxcd_bootstrap.repo_name }} \
     --branch={{ fluxcd_bootstrap.repo_branch }} \
     --personal \
-    --components-extra={{ fluxcd_bootstrap.components_extra|default("", true) }} \
-    --interval="{{ fluxcd_bootstrap.interval|default("1m0s", false) }}" \
+    --components-extra={{ fluxcd_bootstrap.components_extra | default("", true) }} \
+    --interval="{{ fluxcd_bootstrap.interval | default("1m0s", false) }}" \
     --path=./clusters/{{ fluxcd_bootstrap.k8s_cluster_name }}
   args:
     executable: /bin/bash
